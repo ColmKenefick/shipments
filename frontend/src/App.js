@@ -1,5 +1,5 @@
 import * as React from "react";
-import InventoryManager from "./modules/InventoryManager";
+import InventoryManager from "./modules/Shipments";
 import { Flex, Container, Heading } from "@chakra-ui/react";
 
 function App() {
