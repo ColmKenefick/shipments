@@ -1,5 +1,11 @@
 <?php
+
 header('Content-Type: application/json');
+
+// prevents cors errors 
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Headers: Content-Type');
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -8,8 +14,12 @@ if ($method === 'GET') {
 
     $dir = 'sqlite:/var/www/html/shipments.db';
     $dbh  = new PDO($dir);
-    // maybe sort
-    $query =  "SELECT id, name, status FROM shipments";
+
+    // return the top 10 for now - looks better
+    $query =  "SELECT id, name, status, timestamp 
+          FROM shipments
+          ORDER BY timestamp DESC 
+          LIMIT 10";
 
     foreach ($dbh->query($query) as $row)
     {
@@ -24,7 +34,7 @@ if ($method === 'GET') {
     
     
 } else {
-    // Method not allowed
+    // method other than GET are not allowed fro now
     http_response_code(405);
     echo json_encode(['status' => 'error', 'message' => 'Method Not Allowed. We only serve GET requests over here.']);
 }

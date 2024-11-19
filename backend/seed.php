@@ -1,53 +1,53 @@
 <?php
 
-// Create (or open) the SQLite database
+// create SQLite database
 $db = new PDO('sqlite:shipments.db');
-
 // Enable exceptions for database errors
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$numEntries = 30;
 
 try {
-    // Create the `shipments` table if it doesn't already exist
+    // Create the `shipments` table with some definitions
     $db->exec("
         CREATE TABLE IF NOT EXISTS shipments (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
+            timestamp DATETIME NOT NULL,
             status TEXT NOT NULL CHECK(status IN ('shipped', 'not shipped', 'cancelled'))
         )
     ");
-    echo "Table created or already exists.\n";
+    echo "created sucessfully or already exists.\n";
 
-    // Clear existing data (optional)
     $db->exec("DELETE FROM shipments");
-    echo "Table cleared.\n";
+    echo "removing old entries.\n";
 
-    // Seed data
-    $seedData = [
-        ['name' => 'Shipment A', 'status' => 'shipped'],
-        ['name' => 'Shipment B', 'status' => 'not shipped'],
-        ['name' => 'Shipment C', 'status' => 'cancelled'],
-        ['name' => 'Shipment D', 'status' => 'shipped'],
-        ['name' => 'Shipment E', 'status' => 'not shipped'],
-        ['name' => 'Shipment F', 'status' => 'not shipped'],
-        ['name' => 'Shipment G', 'status' => 'not shipped'],
-        ['name' => 'Shipment H', 'status' => 'not shipped'],
+    $statuses = ['shipped', 'not shipped', 'cancelled'];
+    $baseTimestamp = strtotime('2024-05-01 00:00:00'); 
 
-    ];
+    $shipments = [];
 
-    // Insert data into the table
-    $stmt = $db->prepare("INSERT INTO shipments (name, status) VALUES (:name, :status)");
-    foreach ($seedData as $data) {
-        $stmt->execute([
-            ':name' => $data['name'],
-            ':status' => $data['status']
-        ]);
+    for ($i = 1; $i <= $numEntries; $i++) {
+        $randomStatus = $statuses[array_rand($statuses)];
+        $randomTimestamp = date('Y-m-d H:i:s', $baseTimestamp + rand(0, 3600 * 24 * 30)); // some random date in the month
+        $shipments[] = [
+            'id' => $i,
+            'name' => "Shipment $i",
+            'status' => $randomStatus,
+            'timestamp' => $randomTimestamp,
+        ];
     }
 
-    echo "Seed data inserted successfully.\n";
+    
+    $stmt = $db->prepare('INSERT INTO shipments (id, name, status, timestamp) VALUES (:id, :name, :status, :timestamp)');
+
+    foreach ($shipments as $shipment) {
+        $stmt->execute($shipment);
+    }
+
+    echo "successfully seeded data";
 
 } catch (PDOException $e) {
-    // Handle errors
-    echo "Error: " . $e->getMessage() . "\n";
+    echo "we caught an error, for now we just echo: " . $e->getMessage() . "\n";
 }
 
 // Close the connection
