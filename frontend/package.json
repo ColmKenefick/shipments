@@ -1,5 +1,5 @@
 {
-  "name": "colmk-app",
+  "name": "shipments",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
