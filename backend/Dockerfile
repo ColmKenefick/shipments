@@ -1,18 +1,18 @@
-# Use the official PHP image
+# use php
 FROM php:8.1-apache
 
-# Install system dependencies, including sqlite3 and its development headers
+# install deps
 RUN apt-get update && apt-get install -y \
     sqlite3 \
     libsqlite3-dev \
     && docker-php-ext-install pdo pdo_sqlite
 
-# Copy your application code into the container
+# copy code to the container
 COPY . /var/www/html
 
-# Set permissions for the web directory
+# adjust perms
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
-# Expose port 80 for web traffic
+# expose port for wed traffic
 EXPOSE 80

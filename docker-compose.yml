@@ -10,11 +10,11 @@ services:
       - ./backend:/var/www/html
     restart: always
 
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #   ports:
-  #     - "3000:80"
-  #   restart: always
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:80"
+    restart: always
     
     

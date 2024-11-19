@@ -3,19 +3,19 @@ FROM node:18 AS build
 
 WORKDIR /app
 
-# install dependencies
+# install deps
 COPY package*.json ./
 RUN npm install
 
-# move react app and build
+# copy code to the container and build
 COPY . ./
 RUN npm run build
 
-# nginx to
+# nginx
 FROM nginx:alpine
 
-# cp build output to Nginx's default HTML location
+# cp build output to nginx's HTML location
 COPY --from=build /app/build /usr/share/nginx/html
 
-# expose  Nginx port
+# expose nginx
 EXPOSE 80

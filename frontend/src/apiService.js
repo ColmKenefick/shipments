@@ -6,8 +6,6 @@ export const fetchShipments = async (delay = 1000) => {
 
     const response = await fetch(API_BASE_URL, { method: "GET" });
 
-    console.log("API_BASE_URL", API_BASE_URL, response);
-
     if (!response.ok) {
         throw new Error("ooops, something going on with our backend");
     }

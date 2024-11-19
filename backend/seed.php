@@ -1,10 +1,11 @@
 <?php
 
+
 // create SQLite database
 $db = new PDO('sqlite:shipments.db');
 // Enable exceptions for database errors
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$numEntries = 30;
+$numEntries = 10;
 
 try {
     // Create the `shipments` table with some definitions
@@ -16,10 +17,10 @@ try {
             status TEXT NOT NULL CHECK(status IN ('shipped', 'not shipped', 'cancelled'))
         )
     ");
-    echo "created sucessfully or already exists.\n";
+    
 
     $db->exec("DELETE FROM shipments");
-    echo "removing old entries.\n";
+    
 
     $statuses = ['shipped', 'not shipped', 'cancelled'];
     $baseTimestamp = strtotime('2024-05-01 00:00:00'); 
@@ -44,7 +45,7 @@ try {
         $stmt->execute($shipment);
     }
 
-    echo "successfully seeded data";
+    
 
 } catch (PDOException $e) {
     echo "we caught an error, for now we just echo: " . $e->getMessage() . "\n";
