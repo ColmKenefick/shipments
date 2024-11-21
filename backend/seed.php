@@ -3,12 +3,12 @@
 
 // create SQLite database
 $db = new PDO('sqlite:shipments.db');
-// Enable exceptions for database errors
+// enable exceptions for database errors
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $numEntries = 10;
 
 try {
-    // Create the `shipments` table with some definitions
+    // create `shipments` table
     $db->exec("
         CREATE TABLE IF NOT EXISTS shipments (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -18,7 +18,7 @@ try {
         )
     ");
     
-
+    // deletes previous entries
     $db->exec("DELETE FROM shipments");
     
 
@@ -29,7 +29,7 @@ try {
 
     for ($i = 1; $i <= $numEntries; $i++) {
         $randomStatus = $statuses[array_rand($statuses)];
-        $randomTimestamp = date('Y-m-d H:i:s', $baseTimestamp + rand(0, 3600 * 24 * 30)); // some random date in the month
+        $randomTimestamp = date('Y-m-d H:i:s', $baseTimestamp + rand(0, 3600 * 24 * 30)); // some random date in a month
         $shipments[] = [
             'id' => $i,
             'name' => "Shipment $i",
@@ -51,7 +51,7 @@ try {
     echo "we caught an error, for now we just echo: " . $e->getMessage() . "\n";
 }
 
-// Close the connection
+// close the PDO connection
 $db = null;
 
 ?>

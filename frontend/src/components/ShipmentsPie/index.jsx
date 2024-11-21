@@ -1,6 +1,7 @@
 import * as React from "react";
 import { PieChart, Pie, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { transformShipmentsForPieChart } from "../../utils/transforms";
+import { pieChartStyles } from "./styles";
 
 const COLORS = ["#0088FE", "#E53E3E", "#FFBB28"];
 const RADIAN = Math.PI / 180;
@@ -12,7 +13,6 @@ const renderCustomizedLabel = ({
     innerRadius,
     outerRadius,
     percent,
-    index,
 }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -31,20 +31,12 @@ const renderCustomizedLabel = ({
     );
 };
 
-const ShipmentsPie = ({ shipments, error, isLoading }) => {
-    // @TO DO - we should handle error here
+const ShipmentsPie = ({ shipments }) => {
     return (
         <>
-            {shipments.length && !isLoading && (
+            {shipments.length && (
                 <ResponsiveContainer width={700} height="80%">
-                    <PieChart
-                        margin={{
-                            top: 0,
-                            right: 0,
-                            left: 0,
-                            bottom: 0,
-                        }}
-                    >
+                    <PieChart margin={pieChartStyles}>
                         <Pie
                             data={transformShipmentsForPieChart(shipments)}
                             cx="50%"

@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8080/colmapi.php";
+const API_BASE_URL = "http://localhost:8080/index.php";
 
 export const fetchShipments = async (delay = 1000) => {
     // use a delay to simulate loading state
@@ -6,9 +6,6 @@ export const fetchShipments = async (delay = 1000) => {
 
     const response = await fetch(API_BASE_URL, { method: "GET" });
 
-    if (!response.ok) {
-        throw new Error("ooops, something going on with our backend");
-    }
-
+    // return all responses - we catch and handle errors in FE
     return await response.json();
 };

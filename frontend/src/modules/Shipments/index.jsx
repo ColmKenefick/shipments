@@ -1,25 +1,28 @@
 import * as React from "react";
 import { fetchShipments } from "../../apiService";
-import { Flex } from "@chakra-ui/react";
+import {
+    Flex,
+    Alert,
+    AlertIcon,
+    AlertTitle,
+    AlertDescription,
+    Skeleton,
+    Stack,
+} from "@chakra-ui/react";
 import ShipmentsTable from "../../components/ShipmentsTable";
 import ShipmentsPie from "../../components/ShipmentsPie";
 
-export const transformShipments = (data) => {
-    return data?.reduce((acc, { status, name }) => {
-        const key = status.replace(" ", "").toLowerCase();
-        if (!acc[key]) {
-            acc[key] = { count: 0, names: [] };
-        }
-        acc[key].count += 1;
-        acc[key].names.push(name);
-        return acc;
-    }, {});
-};
+const SKELETONS_FOR_RENDER = 12;
+
+const renderLoadingSkeletons = (count, el) =>
+    Array(count)
+        .fill(null)
+        .map(() => el);
 
 const Shipments = () => {
     const [shipments, setShipments] = React.useState({});
-    const [error, setError] = React.useState(false);
-    const [loading, setIsLoading] = React.useState(true);
+    const [error, setError] = React.useState({});
+    const [isLoading, setIsLoading] = React.useState(true);
 
     React.useEffect(() => {
         setIsLoading(true);
@@ -30,33 +33,42 @@ const Shipments = () => {
         try {
             const result = await fetchShipments();
 
-            setShipments(result.data);
+            result.status !== "success"
+                ? setError(result)
+                : setShipments(result.data);
             setIsLoading(false);
-            console.log(result);
-        } catch (err) {
-            console.log(err);
-            setError("error");
-        } finally {
-            console.log("wtf");
+        } catch (error) {
+            setIsLoading(false);
+            setError(error);
         }
     };
 
     return (
         <Flex w={"full"}>
-            <Flex w="100%">
-                <ShipmentsTable
-                    error={error}
-                    isLoading={loading}
-                    shipments={shipments}
-                />
-            </Flex>
-            <Flex>
-                <ShipmentsPie
-                    error={error}
-                    isLoading={loading}
-                    shipments={shipments}
-                />
-            </Flex>
+            {error?.message ? (
+                <Alert status="error">
+                    <AlertIcon />
+                    <AlertTitle>We're sorry!</AlertTitle>
+                    <AlertDescription>{error.message}</AlertDescription>
+                </Alert>
+            ) : isLoading ? (
+                <Stack p={2} w={"full"}>
+                    <Skeleton height="40px" isLoaded={!isLoading} />
+                    {renderLoadingSkeletons(
+                        SKELETONS_FOR_RENDER,
+                        <Skeleton height="20px" />
+                    )}
+                </Stack>
+            ) : (
+                <>
+                    <Flex w="100%">
+                        <ShipmentsTable shipments={shipments} />
+                    </Flex>
+                    <Flex>
+                        <ShipmentsPie shipments={shipments} />
+                    </Flex>
+                </>
+            )}
         </Flex>
     );
 };

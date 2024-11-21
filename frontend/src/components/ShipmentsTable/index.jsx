@@ -6,21 +6,14 @@ import {
     Th,
     Tr,
     Td,
-    Skeleton,
     Tbody,
-    Stack,
 } from "@chakra-ui/react";
 
-const ShipmentsTable = ({ shipments, error, isLoading }) => {
+const ShipmentsTable = ({ shipments }) => {
     return (
         <TableContainer w={"full"}>
-            {shipments.length && !isLoading ? (
-                <Table
-                    variant="simple"
-                    colorScheme="purple"
-                    size="sm"
-                    setIsLoading={isLoading}
-                >
+            {shipments.length && (
+                <Table variant="simple" colorScheme="purple" size="sm">
                     <Thead>
                         <Tr>
                             <Th>Name</Th>
@@ -31,29 +24,13 @@ const ShipmentsTable = ({ shipments, error, isLoading }) => {
                     <Tbody>
                         {shipments?.map((item) => (
                             <Tr key={"id"}>
-                                <Td
-                                    onClick={(e) =>
-                                        // could use for something
-                                        console.log(e.target.innerHTML)
-                                    }
-                                >
-                                    {item.name}
-                                </Td>
+                                <Td>{item.name}</Td>
                                 <Td>{item.status}</Td>
                                 <Td>{item.timestamp}</Td>
                             </Tr>
                         ))}
                     </Tbody>
                 </Table>
-            ) : error ? (
-                "errror"
-            ) : (
-                <Stack p={2}>
-                    <Skeleton height="40px" isLoaded={!isLoading}></Skeleton>
-                    <Skeleton height="20px" />
-                    <Skeleton height="20px" />
-                    <Skeleton height="20px" />
-                </Stack>
             )}
         </TableContainer>
     );
