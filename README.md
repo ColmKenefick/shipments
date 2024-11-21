@@ -33,7 +33,7 @@ Connected logic is maintained in the modules folder. this component talks to the
 The child components are data driven and rendered when required data is available to them. They would be easy to test for this reason. 
 
 
-#### data seeding
+#### Data Seeding
 
 the app should seed the db on first load in a new environment (Database is local only using SQLite). to test it you can replace the GET endpoints query with that defined [here]: https://github.com/ColmKenefick/shipments/blob/445f1f34bb635e69c5b534e0e853ddcd421255a3/backend/colmapi.php#L28
 
