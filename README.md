@@ -23,7 +23,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The mini-project is split in two the backend is a simple php powered api that handles a GET HTTP request for data stored in a local sqlite database. 
 
-There's a database seeder which gets ran when the app initialises to seed the SQLite DB with Shipment data
+There's a database seeder which gets run when the app initialises to seed the SQLite DB with Shipment data
 
 The frontend is a [React.js](https://react.dev/)  driven frontend with two main components a table for overall data view and a chart for data visualisation related to shipment status.
 
