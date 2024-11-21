@@ -48,7 +48,7 @@ the app should seed the db on first load in a new environment (Database is local
 
 - php framework - would give me access to middleware allowing only certain users with api access the ability to GET (using JWT or similar)
 - create a realtional db with products, status etc..
-- typescript
+- use Typescript for frontend dev
 - add more styles and abstract away in self contained files
 - pagination - table not scalable 
 - use react router or similar and ensure user
