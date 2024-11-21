@@ -6,11 +6,12 @@
 
 ## Running locally 
 
-The app has two Docker images one for the backend and one for the frontend. The backend is built using  php and served on apache image with the frontend built using react and hosted on a lightweight nginx image.
+
 
 In the project root, you can run
 
 ###  `docker-compose build`
+
 
 followed by 
 
@@ -21,11 +22,11 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 ## Architecture
 
-The mini-project is split in two the backend is a simple php powered api that handles a GET HTTP request for data stored in a local sqlite database. 
+The mini-project is split in two the backend is a simple php powered api erved on apache that handles a GET HTTP request for data stored in a local sqlite database. 
 
 There's a database seeder which gets run when the app initialises to seed the SQLite DB with Shipment data
 
-The frontend is a [React.js](https://react.dev/)  driven frontend with two main components a table for overall data view and a chart for data visualisation related to shipment status.
+The frontend is a [React.js](https://react.dev/)  driven frontend, hosted on a lightweight nginx image, with two main components a table for overall data view and a chart for data visualisation related to shipment status.
 
 Connected logic is maintained in the modules folder. this component talks to the store/api and handles loading and error based logic relevant to the child components for data.
 
